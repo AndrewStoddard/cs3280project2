@@ -3,32 +3,6 @@ import re
 __author__ = "AndrewStoddard"
 __version__ = "Fall 2020"
 
-
-def convert_binary_to_dec(binary):
-    binary_list = convert_binary_string_to_list(binary)
-    value = 0
-    for i in range(len(binary_list)):
-        digit = binary_list.pop()
-        if (digit == '1'):
-            value = value + pow(2, i)
-    return value
-
-def convert_binary_string_to_list(binary):
-    binary = binary.replace('0b', '')
-    binary_list = []
-    for letter in binary:
-        binary_list.append(letter)
-    return binary_list
-
-def to_binary_from_active_bits(number_of_active_bits):
-    binary = "0b"
-    for i in range(0, 8):
-        if (i < number_of_active_bits):
-            binary += '1'
-        else:
-            binary += '0'
-    return binary
-
 def is_valid_ip(ip):
     regex = re.compile(r"\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b")
     if regex.match(ip):
@@ -46,16 +20,42 @@ def is_valid_subnet_mask(subnet_mask):
             pass
         elif (subnet_mask_octets[octect_index] in octets and not has_to_be_0):
             has_to_be_0 = True
-        elif (not subnet_mask_octets[octect_index] == '0' and has_to_be_0):
+        elif ((not subnet_mask_octets[octect_index] == '0' and has_to_be_0) or subnet_mask_octets[octect_index] > '255'):
             return False
     return True
+
+def convert_binary_string_to_list(binary):
+    binary = binary.replace('0b', '')
+    binary_list = []
+    for letter in binary:
+        binary_list.append(letter)
+    return binary_list
+
+def convert_binary_to_dec(binary):
+    binary_list = convert_binary_string_to_list(binary)
+    value = 0
+    for i in range(len(binary_list)):
+        digit = binary_list.pop()
+        if (digit == '1'):
+            value = value + pow(2, i)
+    return value
+
+def to_binary_from_active_bits(number_of_active_bits):
+    binary = "0b"
+    for i in range(0, 8):
+        if (i < number_of_active_bits):
+            binary += '1'
+        else:
+            binary += '0'
+    return binary
+
 
 def count_active_bits(binary):
     binary = binary.replace('0b', '')
     count = 0
     for bit in binary:
         if bit == '1':
-            count += count + 1
+            count += 1
     return count
 
 def find_maxed_octets(subnet_mask, bit_form):

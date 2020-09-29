@@ -47,7 +47,7 @@ def main(arg1, arg2):
    
     
     binary_of_active = utils.to_binary_from_active_bits(subnet_active_bits)
-    binary_of_changing_octet = bin(int(octets[subnet_maxed_octets]))[2:].zfill(8)
+    binary_of_changing_octet = '0b' + bin(int(octets[subnet_maxed_octets]))[2:].zfill(8)
     binary_list_of_active = utils.convert_binary_string_to_list(binary_of_active)
     binary_list_of_changing_octet = utils.convert_binary_string_to_list(binary_of_changing_octet)
     
