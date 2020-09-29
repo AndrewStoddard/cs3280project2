@@ -22,7 +22,7 @@ class TheUtilTestClass(unittest.TestCase):
     def testInvalidIPSlot3(self):
         result = utils.is_valid_ip('192.256.1')
         self.assertFalse(result)
-    
+
     def testInvalidIPSlot4(self):
         result = utils.is_valid_ip('192.256.1.')
         self.assertFalse(result)
@@ -30,7 +30,7 @@ class TheUtilTestClass(unittest.TestCase):
     def testValidSubnetMaskSlot1(self):
         result = utils.is_valid_subnet_mask('192.0.0.0')
         self.assertTrue(result)
-    
+
     def testValidSubnetMaskSlot2(self):
         result = utils.is_valid_subnet_mask('255.192.0.0')
         self.assertTrue(result)
@@ -42,7 +42,7 @@ class TheUtilTestClass(unittest.TestCase):
     def testValidSubnetMaskSlot4(self):
         result = utils.is_valid_subnet_mask('255.255.255.192')
         self.assertTrue(result)
-   
+
     def testInvalidSubnetMaskSlot1(self):
         result = utils.is_valid_subnet_mask('0.255.255.192')
         self.assertFalse(result)
@@ -72,7 +72,7 @@ class TheUtilTestClass(unittest.TestCase):
         result = utils.convert_binary_string_to_list(bin(0))
         for bit in result:
             self.assertEquals(bit, '0')
-    
+
     def testConvertingBinaryStringToListMid(self):
         result = utils.convert_binary_string_to_list(bin(85))
         for bit_index in range(0, len(result)):
@@ -84,7 +84,7 @@ class TheUtilTestClass(unittest.TestCase):
     def testConvertingBinaryListToDecimalHigh(self):
         result = utils.convert_binary_to_dec(bin(255))
         self.assertEquals(result, 255)
-    
+
     def testConvertingBinaryListToDecimalLow(self):
         result = utils.convert_binary_to_dec(bin(0))
         self.assertEquals(result, 0)
@@ -92,11 +92,11 @@ class TheUtilTestClass(unittest.TestCase):
     def testConvertingBinaryListToDecimalMid(self):
         result = utils.convert_binary_to_dec(bin(85))
         self.assertEquals(result, 85)
-        
+
     def testActiveBitsToBinaryHigh(self):
         result = utils.to_binary_from_active_bits(8)
         self.assertEquals(result, bin(255))
-    
+
     def testActiveBitsToBinaryLow(self):
         result = utils.to_binary_from_active_bits(0)
         self.assertEquals(result, '0b' + bin(0)[2:].zfill(8))
@@ -108,7 +108,7 @@ class TheUtilTestClass(unittest.TestCase):
     def testActiveBitsHigh(self):
         result = utils.count_active_bits(bin(255))
         self.assertEquals(result, 8)
-    
+
     def testActiveBitsLow(self):
         result = utils.count_active_bits(bin(0))
         self.assertEquals(result, 0)
@@ -164,8 +164,8 @@ class TheUtilTestClass(unittest.TestCase):
     def testFindActiveBitsNumberFormMid(self):
         result = utils.find_active_bits('255.255.255.224', False)
         self.assertEquals(result, 3)
-   
-    
+
+
 
 if __name__ == '__main__':
     unittest.main()
