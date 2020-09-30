@@ -11,14 +11,6 @@ __version__ = "Fall 2020"
 
 
 
-
-
-
-
-
-
-
-
 def main(ip_address, subnet_mask):
     '''
     The main function
@@ -26,6 +18,7 @@ def main(ip_address, subnet_mask):
     is_subnet_mask_in_bits = False
     if not utils.is_valid_ip(ip_address):
         print("Invalid IP")
+        return
 
     if not utils.is_valid_subnet_mask(subnet_mask):
         try:
@@ -40,10 +33,12 @@ def main(ip_address, subnet_mask):
 
 
     octets = ip_address.split('.')
-
+    for octet in octets:
+        print(octet)
     subnet_active_bits = utils.find_active_bits(subnet_mask, is_subnet_mask_in_bits)
+    print(is_subnet_mask_in_bits)
     subnet_maxed_octets = utils.find_maxed_octets(subnet_mask, is_subnet_mask_in_bits)
-
+    print(subnet_maxed_octets)
 
     binary_of_active = utils.to_binary_from_active_bits(subnet_active_bits)
     binary_of_changing_octet = '0b' + bin(int(octets[subnet_maxed_octets]))[2:].zfill(8)
@@ -70,6 +65,7 @@ def main(ip_address, subnet_mask):
 
 
     print(new_ip)
+    return new_ip
 
 
 if __name__ == "__main__":

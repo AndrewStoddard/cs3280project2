@@ -11,8 +11,7 @@ def is_valid_ip(ip_address):
     '''
     Checks if IP is valid
     '''
-    regex = re.compile(r"\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|\[01]?[0-9]\
-        [0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b")
+    regex = re.compile(r"\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b")
     if regex.match(ip_address):
         return True
     return False
@@ -32,6 +31,8 @@ def is_valid_subnet_mask(subnet_mask):
         elif octet in octets and not has_to_be_0:
             has_to_be_0 = True
         elif (not octet == '0' and has_to_be_0) or octet > '255':
+            return False
+        elif len(subnet_mask_octets) < 4:
             return False
     return True
 
