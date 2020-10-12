@@ -3,7 +3,7 @@
 A simple HTTP server example.
 '''
 import http.server
-import cs3280project2 as calc
+import cs3280project2 as calculator
 
 __author__ = 'CS3280'
 __version__ = 'Fall2020'
@@ -50,7 +50,11 @@ class L13Server(http.server.BaseHTTPRequestHandler):
         '''
         ip_address = query[0]
         subnet_mask = query[1]
-        result = calc.main(ip_address, subnet_mask)
+        result = calculate.main(ip_address, subnet_mask)
+
+        if code == 400:
+            self.send_error(400, "Invalid Input")
+
 
         body = 'Hello, ' + ' The subnet is: ' + result + '!'
         html = "<!DOCTYPE html><html>"
@@ -63,6 +67,13 @@ class L13Server(http.server.BaseHTTPRequestHandler):
         html += "</html>"
         self.log_message("page built")
         return html
+
+    def start_server():
+        PORT = 3280
+        server = http.server.HTTPServer(('10.0.2.15', PORT), L13Server)
+        print('Subnet Calculator running on port {}; Type <Ctrl-C> to stop server.'.format(PORT))
+        server.serve_forever()
+
 
 if __name__ == '__main__':
     PORT = 3280

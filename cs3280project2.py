@@ -5,31 +5,78 @@ Project 2
 '''
 import sys
 import utils
+import re
+import http_server
 
 __author__ = "AndrewStoddard"
 __version__ = "Fall 2020"
 
+def ipv6_subnet_calc(ipv6, prefix):
+    """
+    calculates the ipv6 subnet
+    """
+    ipv6_split = ipv6.split(':')
+    active_hex = prefix // 16
+    subnet = ipv6_split[active_hex]
+    active_hex_bits = prefix % 16
+    print(active_hex_bits)
+    active_hex_index = active_hex_bits // 4
+    print(active_hex_index)
+    active_bits = active_hex_bits % 4
 
+    print(active_bits)
+    subnet_result  = ""
+    if subnet == "":
+        subnet_result = "0000"
+    else:
+        for character_index, character in enumerate(subnet):
+            print("index: " + str(character_index) + "  char : " + character)
+            if character_index > active_hex_index - 1:
+                subnet_result += "0000"
 
-def main(ip_address, subnet_mask):
-    '''
-    The main function
-    '''
-    is_subnet_mask_in_bits = False
-    if not utils.is_valid_ip(ip_address):
-        print("Invalid IP")
-        return
-
-    if not utils.is_valid_subnet_mask(subnet_mask):
-        try:
-            if int(subnet_mask) < 32 and int(subnet_mask) > 0:
-                is_subnet_mask_in_bits = True
+            elif character_index <= active_hex_index - 1:
+                hex_binary = hex_to_binary(character)[2:]
+                print("Hex Binary 1: " + hex_binary)
+                for bit in hex_binary:
+                    print("  bit : " + bit)
+                    if int(bit) & 1:
+                        subnet_result += "1"
+                    else:
+                        subnet_result += "0"
             else:
-                print("Invalid Subnet Mask")
-                return
-        except ValueError:
-            print("Invalid Subnet Mask")
-            return
+                hex_binary = hex_to_binary(character)[2:]
+                print("Hex Binary 2: " + hex_binary)
+                for index, bit in enumerate(hex_binary):
+                    print("index: " + str(index) + "  bit : " + bit)
+                    if index < active_bits:
+                        subnet_result += "0"
+                    else:
+                        if int(bit) & 1:
+                            subnet_result += "1"
+                        else:
+                            subnet_result += "0"
+    result = ""
+    for index, hex_value in enumerate(ipv6_split):
+        if index == active_hex:
+            result += str(hex(int(subnet_result, 2)))[2:]
+        elif index < active_hex:
+            result += hex_value
+        else:
+            result += "0000"
+        if index < len(ipv6_split) - 1:
+            result += ":"
+
+    return result
+
+
+
+
+
+
+def ipv4_subnet_calc(ip_address, subnet_mask, is_subnet_mask_in_bits):
+    '''
+    calculates the ipv4 subnet
+    '''
 
 
     octets = ip_address.split('.')
@@ -61,12 +108,36 @@ def main(ip_address, subnet_mask):
             new_ip += str(changed_octet)
         else:
             new_ip += '.0'
-
-
-
-    print(new_ip)
     return new_ip
 
+def main(ip_address, subnet_mask):
+    """
+    Validates the Ip and mask passed in
+    """
+    if utils.is_valid_ipv6(ip_address):
+        try:
+            if int(subnet_mask) < 129:
+                return ipv6_subnet_calc(ip_address, subnet_mask)
+            else:
+                print("Invalid Subnet Mask")
+                return 400
+        except ValueError:
+            print("Invalid Subnet Mask")
+            return 400
+    if utils.is_valid_ip(ip_address):
+        if utils.is_valid_subnet_mask(subnet_mask):
+            return ipv4_subnet_calc(ip_address, subnet_mask, False)
+
+        try:
+            if int(subnet_mask) < 32 and int(subnet_mask) > 0:
+                return ipv4_subnet_calc(ip_address, subnet_mask, True)
+            else:
+                print("Invalid Subnet Mask")
+                return 400
+        except ValueError:
+            print("Invalid Subnet Mask")
+            return 400
+    return 400
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2])
+    http_server.start_server()

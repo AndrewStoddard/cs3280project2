@@ -113,3 +113,36 @@ def find_active_bits(subnet_mask, bit_form):
         active_binary = bin(int(active_octet))
         result = count_active_bits(active_binary)
     return result
+
+def is_valid_ipv6(ipv6):
+    '''
+    Checks if IPV6 is valid
+    '''
+    regex = re.compile(r"(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))")
+    if regex.match(ipv6):
+        return True
+    return False
+
+def hex_to_binary(hex):
+    """
+    Converts Hex to Binary
+    """
+    binary = '';
+    regex = re.compile(r"[0-9]")
+    if regex.match(hex):
+        binary = bin(int(hex))
+    regex = re.compile(r"[A-F]")
+    if regex.match(hex):
+        if hex == "A":
+            binary = "0b1010"
+        elif hex == "B":
+            binary = "0b1011"
+        elif hex == "C":
+            binary = "0b1100"
+        elif hex == "D":
+            binary = "0b1101"
+        elif hex == "E":
+            binary = "0b1110"
+        elif hex == "F":
+            binary = "0b1111"
+    return "0b" + binary[2:].zfill(4)

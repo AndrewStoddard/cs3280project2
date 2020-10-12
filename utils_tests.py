@@ -164,7 +164,29 @@ class TheUtilTestClass(unittest.TestCase):
     def testFindActiveBitsNumberFormMid(self):
         result = utils.find_active_bits('255.255.255.224', False)
         self.assertEquals(result, 3)
-
+    def testValidIPV6(self):
+        result = utils.is_valid_ipv6('FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF::')
+        self.assertTrue(result)
+    def testInValidIPV6(self):
+        result = utils.is_valid_ipv6('FFFF:FFFF:FFFF:GGGG:FFFF:FFFF:FFFF::')
+        self.assertFalse(result)
+    def testHexToBinary(self):
+        self.assertEquals("0b0000", utils.hex_to_binary("0"))
+        self.assertEquals("0b0001", utils.hex_to_binary("1"))
+        self.assertEquals("0b0010", utils.hex_to_binary("2"))
+        self.assertEquals("0b0011", utils.hex_to_binary("3"))
+        self.assertEquals("0b0100", utils.hex_to_binary("4"))
+        self.assertEquals("0b0101", utils.hex_to_binary("5"))
+        self.assertEquals("0b0110", utils.hex_to_binary("6"))
+        self.assertEquals("0b0111", utils.hex_to_binary("7"))
+        self.assertEquals("0b1000", utils.hex_to_binary("8"))
+        self.assertEquals("0b1001", utils.hex_to_binary("9"))
+        self.assertEquals("0b1010", utils.hex_to_binary("A"))
+        self.assertEquals("0b1011", utils.hex_to_binary("B"))
+        self.assertEquals("0b1100", utils.hex_to_binary("C"))
+        self.assertEquals("0b1101", utils.hex_to_binary("D"))
+        self.assertEquals("0b1110", utils.hex_to_binary("E"))
+        self.assertEquals("0b1111", utils.hex_to_binary("F"))
 
 
 if __name__ == '__main__':
